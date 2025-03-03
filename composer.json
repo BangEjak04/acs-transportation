@@ -1,0 +1,21 @@
+{
+    "name": "bangejak04/acs-transportation",
+    "description": "ACS Transportation company profile website.",
+    "type": "project",
+    "require": {
+        "php": "^8.3"
+    },
+    "license": "ISC",
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "authors": [
+        {
+            "name": "BangEjak04",
+            "email": "rezaandyahw@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable"
+}

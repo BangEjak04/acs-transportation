@@ -1,0 +1,21 @@
+{
+  "name": "acs-transportation",
+  "version": "0.1.0",
+  "description": "ACS Transportation company profile website",
+  "main": "public/index.php",
+  "scripts": {
+    "test": "npm",
+    "dev": "npx @tailwindcss/cli -i ./public/css/tailwind.css -o ./public/css/app.css --watch",
+    "serve": "php -S localhost:8000 -t public/"
+  },
+  "keywords": [
+    "acs"
+  ],
+  "author": "BangEjak04",
+  "license": "ISC",
+  "dependencies": {
+    "@tailwindcss/cli": "^4.0.9",
+    "alpinejs": "^3.14.8",
+    "tailwindcss": "^4.0.9"
+  }
+}
