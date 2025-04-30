@@ -8,7 +8,7 @@ pipeline {
   stages {
     stage('Checkout') {
       steps {
-        git credentialsId: 'github-pat', url: 'https://github.com/BangEjak04/acs-transportation.git', branch: 'main'
+        git credentialsId: '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', url: 'https://github.com/BangEjak04/acs-transportation.git', branch: 'main'
       }
     }
 
