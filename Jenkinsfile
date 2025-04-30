@@ -1,33 +1,46 @@
 pipeline {
-    agent any
+  agent any
 
-    environment {
-        DOCKER_IMAGE = 'laravelsail/php82-composer:latest'
+  environment {
+    COMPOSE_FILE = 'docker-compose.yml'
+  }
+
+  stages {
+    stage('Checkout') {
+      steps {
+        git credentialsId: 'github-pat', url: 'https://github.com/BangEjak04/acs-transportation.git', branch: 'main'
+      }
     }
 
-    stages {
-        stage('Checkout') {
-            steps {
-                git 'https://github.com/BangEjak04/acs-transportation.git'
-            }
-        }
-
-        stage('Build & Test with Docker') {
-            steps {
-                sh """
-                docker run --rm \
-                    -v \$PWD:/app \
-                    -w /app \
-                    ${DOCKER_IMAGE} \
-                    bash -c '
-                        cp .env.example .env
-                        composer install
-                        php artisan key:generate
-                        php artisan config:clear
-                        php artisan test
-                    '
-                """
-            }
-        }
+    stage('Build Docker Containers') {
+      steps {
+        sh 'docker-compose build'
+      }
     }
+
+    stage('Run Containers') {
+      steps {
+        sh 'docker-compose up -d'
+      }
+    }
+
+    stage('Install Laravel Dependencies') {
+      steps {
+        sh 'docker-compose exec -T app composer install'
+      }
+    }
+
+    stage('Run Laravel Migration') {
+      steps {
+        sh 'docker-compose exec -T app php artisan migrate'
+      }
+    }
+  }
+
+  post {
+    always {
+      echo "Cleaning up..."
+      sh 'docker-compose down'
+    }
+  }
 }
