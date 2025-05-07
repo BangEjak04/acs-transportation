@@ -7,14 +7,21 @@ pipeline {
     }
 
     environment {
-        APP_NAME = 'laravel-app'
-        DB_HOST = 'db'
+        APP_ENV = 'testing'
+        DB_CONNECTION = 'mysql'
+        DB_HOST = 'mysql'
         DB_DATABASE = 'laravel'
         DB_USERNAME = 'root'
         DB_PASSWORD = 'password'
     }
 
     stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
         stage('Setup') {
             steps {
                 sh 'apt-get update && apt-get install -y git unzip'
@@ -47,16 +54,11 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
-            when {
-                branch 'main'
-            }
+        stage('Build Docker Image') {
             steps {
-                // Sesuaikan dengan proses deploy Anda
-                echo 'Deploying to production...'
-                // Contoh deploy menggunakan Docker:
-                sh 'docker build -t laravel-app .'
-                sh 'docker-compose down && docker-compose up -d'
+                script {
+                    docker.build("laravel-app:${env.BUILD_ID}")
+                }
             }
         }
     }
